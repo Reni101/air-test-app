@@ -1,60 +1,53 @@
 import React, {useEffect, useRef} from 'react';
-import {ScrollView, StyleSheet, Text, View} from "react-native";
-import {useAppSelector} from "../../hooks/useAppHooks";
-import {Chevron} from "../../assets/icon/chevron";
+import {FlatList, StyleSheet, Text, View} from "react-native";
+import {useAppSelector} from "../../common/hooks/useAppHooks";
+import {Chevron} from "../../common/assets/icon/chevron";
+import {PostItem} from "../../common/ui/post-item/post-item";
+import {selectPosts, selectPostsPerPage} from "../../service/posts-slice";
 
 type propsType = {
     currentPage: number
 }
 
 export const Table = ({currentPage}: propsType) => {
-    const scrollViewRef = useRef<ScrollView>(null);
+    const listRef = useRef<FlatList<any>>(null);
 
-    const posts = useAppSelector(state => state.postsSlice.posts)
+    const posts = useAppSelector(selectPosts)
+    const postsPerPage = useAppSelector(selectPostsPerPage)
 
-    const itemsPerPage = 10
-
-    const start = (currentPage - 1) * itemsPerPage
-    const end = start + itemsPerPage
+    const start = (currentPage - 1) * postsPerPage
+    const end = start + postsPerPage
 
     useEffect(() => {
-        scrollViewRef?.current?.scrollTo({x: 0, y: 0, animated: true});
+        listRef.current?.scrollToOffset({offset: 0, animated: true});
     }, [currentPage]);
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
+
                 <View style={[styles.headerCell, {flex: 0.15}]}>
                     <Text style={[styles.text]}> ID </Text>
                     <Text> <Chevron/></Text>
                 </View>
-
 
                 <View style={[styles.headerCell, {flex: 0.35}]}>
                     <Text style={[styles.text]}> Заголовок </Text>
                     <Text> <Chevron/></Text>
                 </View>
 
-
                 <View style={[styles.headerCell, {flex: 0.5}]}>
                     <Text style={[styles.text]}>Описание </Text>
                     <Text><Chevron/></Text>
                 </View>
 
-
             </View>
 
-            <ScrollView bounces={false} style={styles.body} ref={scrollViewRef}>
-
-                {posts.slice(start, end).map((el) => {
-                    return <View style={styles.body_row} key={el.id}>
-                        <Text style={[styles.bodyCell, styles.text, {flex: 0.15}]}>{el.id}</Text>
-                        <Text style={[styles.bodyCell, styles.text, {flex: 0.35}]}>{el.title}</Text>
-                        <Text style={[styles.bodyCell, styles.text, {flex: 0.5}]}>{el.body}</Text>
-                    </View>
-                })}
-            </ScrollView>
-
+            <FlatList
+                ref={listRef}
+                data={posts.slice(start, end)}
+                renderItem={PostItem}
+                bounces={false}/>
 
         </View>
     );
@@ -82,19 +75,8 @@ const styles = StyleSheet.create({
     body: {
         flex: 1,
     },
-    body_row: {
-        flexDirection: 'row',
-        flex: 1,
-        borderBottomColor: '#333',
-        borderBottomWidth: 2,
-    },
-    bodyCell: {
-        minHeight: 50,
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-        borderBottomColor: '#333',
-        borderBottomWidth: 2,
-    },
+    body_row: {},
+    bodyCell: {},
     text: {
         color: '#fff',
     },

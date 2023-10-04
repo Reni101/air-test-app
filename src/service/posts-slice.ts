@@ -1,7 +1,8 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {createAppAsyncThunk} from "../common/utils/create-app-async-thunk";
 import {postsApi} from "../api/posts.api";
 import {Post} from "../api/type";
+import {RootState} from "./store";
 
 
 export const getPosts = createAppAsyncThunk(
@@ -25,6 +26,7 @@ type initStateType = {
     filters: {
         q: string | null,
     },
+    postsPerPage: number,
 }
 
 const initialState: initStateType = {
@@ -32,6 +34,8 @@ const initialState: initStateType = {
     filters: {
         q: null,
     },
+    postsPerPage: 10,
+
 }
 
 const slice = createSlice({
@@ -50,8 +54,18 @@ const slice = createSlice({
 
 })
 
+export const selectTotalPosts = (state: RootState) => state.postsSlice.posts.length
+export const selectPosts = (state: RootState) => state.postsSlice.posts
+export const selectPostsPerPage = (state: RootState) => state.postsSlice.postsPerPage
+
+export const selectTotalPages = createSelector(selectTotalPosts,selectPostsPerPage, (totalPosts,postsPerPage) => {
+    return Math.ceil(totalPosts / postsPerPage)
+})
+
+
 export const {setSearchText} = slice.actions
 export const postsReducer = slice.reducer
+
 
 
 

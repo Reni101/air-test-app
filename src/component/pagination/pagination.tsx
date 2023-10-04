@@ -1,7 +1,8 @@
 import React from 'react';
 import {Pressable, StyleSheet, View} from "react-native";
 import {usePagination} from "./usePagination";
-import {Chevron} from "../../assets/icon/chevron";
+import {Chevron} from "../../common/assets/icon/chevron";
+import {PageButtonsForRender} from "../../common/ui/page-buttons-for-render/page-buttons-for-render";
 
 type PropsType = {
     currentPage: number,
@@ -23,7 +24,7 @@ export const Pagination = (props: PropsType) => {
         handleNextPageClicked,
         handleMainPageClicked,
     } = usePagination({
-        count: props.total / 10,
+        count: props.total,
         page: props.currentPage,
         onChange,
     })
@@ -32,12 +33,17 @@ export const Pagination = (props: PropsType) => {
         <View style={styles.container}>
 
             <Pressable onPress={handlePreviousPageClicked} disabled={isFirstPage}>
-                <Chevron color={isFirstPage ? 'red' : '#fff'} style={{transform: [{rotate: '90deg'}],}}/>
+                <Chevron color={isFirstPage ? '#808080' : '#fff'} style={styles.chevronLeft}/>
             </Pressable>
 
+            <PageButtonsForRender
+                currentPage={props.currentPage}
+                handleMainPageClicked={handleMainPageClicked}
+                paginationRange={paginationRange}
+            />
 
             <Pressable onPress={handleNextPageClicked} disabled={isLastPage}>
-                <Chevron style={{transform: [{rotate: '270deg'}]}}/>
+                <Chevron color={isLastPage ? '#808080' : '#fff'} style={styles.chevronRight}/>
             </Pressable>
 
 
@@ -53,8 +59,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 1,
-        borderStyle: "solid",
-        borderColor: '#fff'
+    },
+    chevronLeft: {
+        transform: [{rotate: '90deg'}]
+    },
+    chevronRight: {
+        transform: [{rotate: '270deg'}]
     }
 })
