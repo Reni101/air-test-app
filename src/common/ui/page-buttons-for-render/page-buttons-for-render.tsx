@@ -10,17 +10,18 @@ type PropsType = {
 export const PageButtonsForRender = (props: PropsType) => {
         return (
             <View style={styles.container}>
-                {props.paginationRange.map((page: number | string) => {
+                {props.paginationRange.map((page: number | string, index) => {
                     const isSelected = page === props.currentPage
                     const selectedStyle = isSelected ? styles.selected : null
 
                     if (typeof page === 'string') {
                         return (
-                            <Text style={styles.text}> ... </Text>
+                            <Text key={index} style={styles.text}> ... </Text>
                         )
                     } else {
                         return (
                             <Pressable
+                                key={index}
                                 style={[styles.button, selectedStyle]}
                                 onPress={props.handleMainPageClicked(+page)}>
                                 <Text style={[styles.text, selectedStyle]}>  {page}</Text>
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
         gap: 10,
     },
     button: {
-        width: 30,
+        width: 32,
         height: 30,
         justifyContent: 'center',
         alignItems: 'center',
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
         color: '#000'
     },
     text: {
-        marginLeft: -5,
+        marginLeft: -4,
         color: '#fff'
     },
 })

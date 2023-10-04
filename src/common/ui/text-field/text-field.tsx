@@ -10,7 +10,6 @@ export const TextField = (props: Omit<TextInputProps, 'selectionColor' | 'style'
         <View style={styles.searchSection}>
             <TextInput
                 {...props}
-                placeholder={'search'}
                 placeholderTextColor={"#8C61FF"}
                 selectionColor={'#2F68CC'}
                 style={[

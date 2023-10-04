@@ -1,17 +1,19 @@
 import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {createAppAsyncThunk} from "../common/utils/create-app-async-thunk";
-import {postsApi} from "../api/posts.api";
+import {postsApi, queryTypes} from "../api/posts.api";
 import {Post} from "../api/type";
 import {RootState} from "./store";
-
 
 export const getPosts = createAppAsyncThunk(
     'weatherReducer/getWeather',
     async (_, {rejectWithValue, getState}) => {
         let q = getState().postsSlice.filters.q
+        const _sort = getState().postsSlice.filters._sort
+        const _order = getState().postsSlice.filters._order
         if (q === '') q = null
+
         try {
-            const res = await postsApi.getPosts({q})
+            const res = await postsApi.getPosts({q, _sort, _order})
             return res.data
         } catch (e) {
             return rejectWithValue(e)
@@ -23,9 +25,7 @@ export const getPosts = createAppAsyncThunk(
 
 type initStateType = {
     posts: Post[]
-    filters: {
-        q: string | null,
-    },
+    filters: queryTypes,
     postsPerPage: number,
 }
 
@@ -33,6 +33,8 @@ const initialState: initStateType = {
     posts: [],
     filters: {
         q: null,
+        _sort: 'id',
+        _order: 'asc',
     },
     postsPerPage: 10,
 
@@ -44,6 +46,10 @@ const slice = createSlice({
     reducers: {
         setSearchText(state, action: PayloadAction<string>) {
             state.filters.q = action.payload
+        },
+        setSortParams(state, action: PayloadAction<Omit<queryTypes, 'q'>>) {
+            state.filters._sort = action.payload._sort
+            state.filters._order = action.payload._order
         }
     },
     extraReducers: builder => {
@@ -58,12 +64,12 @@ export const selectTotalPosts = (state: RootState) => state.postsSlice.posts.len
 export const selectPosts = (state: RootState) => state.postsSlice.posts
 export const selectPostsPerPage = (state: RootState) => state.postsSlice.postsPerPage
 
-export const selectTotalPages = createSelector(selectTotalPosts,selectPostsPerPage, (totalPosts,postsPerPage) => {
+export const selectTotalPages = createSelector(selectTotalPosts, selectPostsPerPage, (totalPosts, postsPerPage) => {
     return Math.ceil(totalPosts / postsPerPage)
 })
 
 
-export const {setSearchText} = slice.actions
+export const {setSearchText, setSortParams} = slice.actions
 export const postsReducer = slice.reducer
 
 

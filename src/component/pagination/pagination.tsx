@@ -32,7 +32,7 @@ export const Pagination = (props: PropsType) => {
     return (
         <View style={styles.container}>
 
-            <Pressable onPress={handlePreviousPageClicked} disabled={isFirstPage}>
+            <Pressable onPress={handlePreviousPageClicked} disabled={isFirstPage} hitSlop={10}>
                 <Chevron color={isFirstPage ? '#808080' : '#fff'} style={styles.chevronLeft}/>
             </Pressable>
 

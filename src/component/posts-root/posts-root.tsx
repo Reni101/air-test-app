@@ -13,6 +13,8 @@ export const PostsRoot = () => {
     const dispatch = useAppDispatch()
     const searchText = useAppSelector(state => state.postsSlice.filters.q)
     const totalPosts = useAppSelector(selectTotalPages)
+    const sort = useAppSelector(state => state.postsSlice.filters._sort)
+    const order = useAppSelector(state => state.postsSlice.filters._order)
 
 
     const debouncedValue = useDebounce<string>(searchText ?? "")
@@ -25,13 +27,13 @@ export const PostsRoot = () => {
     useEffect(() => {
         dispatch(getPosts())
         setPage(1)
-    }, [debouncedValue])
+    }, [debouncedValue, sort, order])
 
 
     return (
         <View style={styles.container}>
             <StatusBar barStyle={'light-content'}/>
-            <TextField value={searchText ?? ''} onChangeText={onChangeHandler}/>
+            <TextField placeholder={'search'} value={searchText ?? ''} onChangeText={onChangeHandler}/>
             <Table currentPage={page}/>
             <Pagination currentPage={page} total={totalPosts} changePage={setPage}/>
         </View>

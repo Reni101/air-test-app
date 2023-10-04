@@ -6,7 +6,7 @@ export const Chevron=(props:SvgProps & {color?:string})=> {
         <Svg
             width={24}
             height={24}
-            viewBox="0 0 20 20"
+            viewBox="0 0 24 21"
             fill="none"
             {...props}
         >
