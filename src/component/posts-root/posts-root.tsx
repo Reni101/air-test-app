@@ -3,7 +3,7 @@ import {StatusBar, StyleSheet, View} from "react-native";
 import {useAppDispatch, useAppSelector} from "../../common/hooks/useAppHooks";
 import {getPosts, selectTotalPages, setSearchText} from "../../service/posts-slice";
 import {PADDING} from "../../common/constant/constant";
-import {TextField} from "../../common/ui/text-field/text-field";
+import {TextField} from "../text-field/text-field";
 import {Table} from "../table/table";
 import {color} from "../../common/style/variables";
 import {Pagination} from "../pagination/pagination";
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: color.BACKGROUND_COLOR,
-        paddingTop: 50,
+        paddingVertical: 50,
         paddingHorizontal: PADDING
     },
 })

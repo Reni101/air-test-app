@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, ListRenderItem} from "react-native";
 import {Post} from "../../../api/type";
+import {color} from "../../../common/style/variables";
 
 export const PostItem: ListRenderItem<Post> = ({item}) => {
     return (
@@ -14,19 +15,17 @@ export const PostItem: ListRenderItem<Post> = ({item}) => {
 
 const styles = StyleSheet.create({
     body_row: {
-        flexDirection: 'row',
         flex: 1,
-        borderBottomColor: '#333',
+        flexDirection: 'row',
+        borderBottomColor: color.GRAY,
         borderBottomWidth: 2,
     },
     bodyCell: {
         minHeight: 50,
         paddingHorizontal: 10,
         paddingVertical: 5,
-        borderBottomColor: '#333',
-        borderBottomWidth: 1,
     },
     text: {
-        color: '#fff',
+        color: color.WHITE,
     },
 })

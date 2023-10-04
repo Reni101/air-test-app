@@ -1,5 +1,6 @@
 import React from 'react';
 import {Pressable, View, StyleSheet, Text} from "react-native";
+import {color} from "../../../common/style/variables";
 
 type PropsType = {
     paginationRange: Array<string | number>
@@ -46,16 +47,15 @@ const styles = StyleSheet.create({
         height: 30,
         justifyContent: 'center',
         alignItems: 'center',
-        color: '#fff',
         borderRadius: 4,
     },
     selected: {
-        backgroundColor: '#fff',
-        color: '#000'
+        backgroundColor: color.WHITE,
+        color: color.BACKGROUND_COLOR
     },
     text: {
         marginLeft: -4,
-        color: '#fff'
+        color: color.WHITE
     },
 })
 

@@ -1,10 +1,9 @@
 import React, {useEffect, useRef} from 'react';
-import {FlatList, Pressable, StyleSheet, Text, View} from "react-native";
-import {useAppDispatch, useAppSelector} from "../../common/hooks/useAppHooks";
-import {Chevron} from "../../common/assets/icon/chevron";
-import {PostItem} from "../../common/ui/post-item/post-item";
-import {selectPosts, selectPostsPerPage, setSortParams} from "../../service/posts-slice";
-import {sortType} from "../../api/posts.api";
+import {FlatList, StyleSheet, View} from "react-native";
+import {useAppSelector} from "../../common/hooks/useAppHooks";
+import {PostItem} from "./post-item/post-item";
+import {selectPosts, selectPostsPerPage} from "../../service/posts-slice";
+import {TableHead} from "./table-head/table-head";
 
 type propsType = {
     currentPage: number
@@ -12,71 +11,26 @@ type propsType = {
 
 
 export const Table = ({currentPage}: propsType) => {
-    const dispatch = useAppDispatch()
+
     const listRef = useRef<FlatList<any>>(null);
 
     const posts = useAppSelector(selectPosts)
     const postsPerPage = useAppSelector(selectPostsPerPage)
-    const sort = useAppSelector(state => state.postsSlice.filters._sort)
-    const order = useAppSelector(state => state.postsSlice.filters._order)
 
 
     const start = (currentPage - 1) * postsPerPage
     const end = start + postsPerPage
 
-    const onPressHeadCellHandler = (sortId: sortType) => {
-
-
-        // if (order === 'asc') {
-        //     dispatch(setSortParams({_sort: sortId, _order: 'desc'}))
-        //     return;
-        // }
-        //
-
-        // if (sortId !== sort) {
-        //     debugger
-        //     dispatch(setSortParams({_sort: sortId, _order: 'asc'}))
-        //     return
-        // }
-        const value = order === 'asc' ? 'desc' : 'asc'
-        dispatch(setSortParams({_sort: sortId, _order: value}))
-    };
 
     useEffect(() => {
         listRef.current?.scrollToOffset({offset: 0, animated: true});
     }, [currentPage]);
 
-    const columHead: { id: sortType, title: string, flex: number }[] = [
-        {id: 'id', title: 'ID', flex: 0.15},
-        {id: 'title', title: 'Заголовок', flex: 0.35},
-        {id: 'body', title: 'Описание', flex: 0.5}
-    ]
-
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                {
-                    columHead.map((cell) => {
-                        const isSorted = sort === cell.id
-                        return <Pressable
-                            key={cell.id}
-                            style={[styles.headerCell, {flex: cell.flex}]}
-                            onPress={() => {
-                                onPressHeadCellHandler(cell.id)
-                            }}
-                        >
-                            <Text style={[styles.text, isSorted && styles.sorted]}> {cell.title} </Text>
-                            <Text>
-                                <Chevron
-                                    color={isSorted ? '#8C61FF' : 'none'}
-                                    style={isSorted && (order === 'desc') && styles.descDirection}/>
-                            </Text>
-                        </Pressable>
-                    })
-                }
 
-            </View>
+            <TableHead/>
 
             <FlatList
                 ref={listRef}
@@ -93,30 +47,5 @@ const styles = StyleSheet.create({
     container: {
         marginTop: 20,
         flex: 1,
-    },
-    header: {
-        flexDirection: 'row',
-        backgroundColor: '#333',
-    },
-    headerCell: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: '#fff',
-        borderWidth: 1,
-        borderStyle: "solid",
-        borderColor: '#000'
-    },
-    body: {
-        flex: 1,
-    },
-    sorted: {
-        color: '#8C61FF',
-    },
-    text: {
-        color: '#fff',
-    },
-    descDirection: {
-        transform: [{rotate: '180deg'}]
     },
 })

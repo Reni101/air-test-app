@@ -1,7 +1,7 @@
 import {StyleSheet, TextInput, TextInputProps, View} from "react-native";
 import {useState} from "react";
-import {Search} from "../../assets/icon/search";
-import {color} from "../../style/variables";
+import {Search} from "../../common/assets/icon/search";
+import {color} from "../../common/style/variables";
 
 export const TextField = (props: Omit<TextInputProps, 'selectionColor' | 'style'>) => {
     const [isFocused, setIsFocused] = useState(false);
@@ -10,8 +10,8 @@ export const TextField = (props: Omit<TextInputProps, 'selectionColor' | 'style'
         <View style={styles.searchSection}>
             <TextInput
                 {...props}
-                placeholderTextColor={"#8C61FF"}
-                selectionColor={'#2F68CC'}
+                placeholderTextColor={color.VIOLET}
+                selectionColor={color.BLUE}
                 style={[
                     styles.input,
                     isFocused ? styles.inputFocused : null,
@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         width: '100%',
         borderWidth: 2,
-        borderColor: color.GREY,
+        borderRadius: 4,
+        borderColor: color.GRAY,
         color: color.VIOLET,
         paddingHorizontal: 10,
     },
