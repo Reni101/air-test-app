@@ -1,7 +1,7 @@
 import {StyleSheet, TextInput, TextInputProps, View} from "react-native";
 import {useState} from "react";
-import {Search} from "../../common/assets/icon/search";
 import {color} from "../../common/style/variables";
+import {Search} from "../../common/icons/search";
 
 export const TextField = (props: Omit<TextInputProps, 'selectionColor' | 'style'>) => {
     const [isFocused, setIsFocused] = useState(false);

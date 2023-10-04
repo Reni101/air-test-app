@@ -1,4 +1,3 @@
-import React from 'react';
 import {Pressable, View, StyleSheet, Text} from "react-native";
 import {color} from "../../../common/style/variables";
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import {View, Text, StyleSheet, ListRenderItem} from "react-native";
 import {Post} from "../../../api/type";
 import {color} from "../../../common/style/variables";

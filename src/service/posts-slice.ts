@@ -7,9 +7,10 @@ import {RootState} from "./store";
 export const getPosts = createAppAsyncThunk(
     'weatherReducer/getWeather',
     async (_, {rejectWithValue, getState}) => {
-        let q = getState().postsSlice.filters.q
         const _sort = getState().postsSlice.filters._sort
         const _order = getState().postsSlice.filters._order
+
+        let q = getState().postsSlice.filters.q
         if (q === '') q = null
 
         try {
@@ -63,6 +64,8 @@ const slice = createSlice({
 export const selectTotalPosts = (state: RootState) => state.postsSlice.posts.length
 export const selectPosts = (state: RootState) => state.postsSlice.posts
 export const selectPostsPerPage = (state: RootState) => state.postsSlice.postsPerPage
+export const selectSort = (state: RootState) => state.postsSlice.filters._sort
+export const selectOrder = (state: RootState) => state.postsSlice.filters._order
 
 export const selectTotalPages = createSelector(selectTotalPosts, selectPostsPerPage, (totalPosts, postsPerPage) => {
     return Math.ceil(totalPosts / postsPerPage)

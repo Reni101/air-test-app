@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import {useEffect, useRef} from 'react';
 import {FlatList, StyleSheet, View} from "react-native";
 import {useAppSelector} from "../../common/hooks/useAppHooks";
 import {PostItem} from "./post-item/post-item";

@@ -1,10 +1,9 @@
-import React from 'react';
 import {sortType} from "../../../api/posts.api";
 import {Pressable, StyleSheet, Text, View} from "react-native";
-import {Chevron} from "../../../common/assets/icon/chevron";
-import {setSortParams} from "../../../service/posts-slice";
+import {selectOrder, selectSort, setSortParams} from "../../../service/posts-slice";
 import {useAppDispatch, useAppSelector} from "../../../common/hooks/useAppHooks";
 import {color} from "../../../common/style/variables";
+import {Chevron} from "../../../common/icons/chevron";
 
 const columHead: { id: sortType, title: string, flex: number }[] = [
     {id: 'id', title: 'ID', flex: 0.15},
@@ -15,8 +14,8 @@ const columHead: { id: sortType, title: string, flex: number }[] = [
 export const TableHead = () => {
     const dispatch = useAppDispatch()
 
-    const sort = useAppSelector(state => state.postsSlice.filters._sort)
-    const order = useAppSelector(state => state.postsSlice.filters._order)
+    const sort = useAppSelector(selectSort)
+    const order = useAppSelector(selectOrder)
 
 
     const onPressHeadCellHandler = (sortId: sortType) => {
@@ -27,7 +26,9 @@ export const TableHead = () => {
     return (
         <View style={styles.header}>
             {columHead.map((cell) => {
+
                 const isSorted = sort === cell.id
+
                 return <Pressable
                     key={cell.id}
                     style={[styles.headerCell, {flex: cell.flex}]}
