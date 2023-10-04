@@ -24,9 +24,22 @@ export const Table = ({currentPage}: propsType) => {
     const start = (currentPage - 1) * postsPerPage
     const end = start + postsPerPage
 
-    const onPressHeadCellHandler = (id: sortType) => {
+    const onPressHeadCellHandler = (sortId: sortType) => {
+
+
+        // if (order === 'asc') {
+        //     dispatch(setSortParams({_sort: sortId, _order: 'desc'}))
+        //     return;
+        // }
+        //
+
+        // if (sortId !== sort) {
+        //     debugger
+        //     dispatch(setSortParams({_sort: sortId, _order: 'asc'}))
+        //     return
+        // }
         const value = order === 'asc' ? 'desc' : 'asc'
-        dispatch(setSortParams({_sort: id, _order: value}))
+        dispatch(setSortParams({_sort: sortId, _order: value}))
     };
 
     useEffect(() => {
@@ -45,6 +58,7 @@ export const Table = ({currentPage}: propsType) => {
             <View style={styles.header}>
                 {
                     columHead.map((cell) => {
+                        const isSorted = sort === cell.id
                         return <Pressable
                             key={cell.id}
                             style={[styles.headerCell, {flex: cell.flex}]}
@@ -52,10 +66,11 @@ export const Table = ({currentPage}: propsType) => {
                                 onPressHeadCellHandler(cell.id)
                             }}
                         >
-                            <Text style={[styles.text]}> {cell.title} </Text>
+                            <Text style={[styles.text, isSorted && styles.sorted]}> {cell.title} </Text>
                             <Text>
                                 <Chevron
-                                    style={(sort === cell.id) && (order === 'desc') && styles.descDirection}/>
+                                    color={isSorted ? '#8C61FF' : 'none'}
+                                    style={isSorted && (order === 'desc') && styles.descDirection}/>
                             </Text>
                         </Pressable>
                     })
@@ -94,6 +109,9 @@ const styles = StyleSheet.create({
     },
     body: {
         flex: 1,
+    },
+    sorted: {
+        color: '#8C61FF',
     },
     text: {
         color: '#fff',
