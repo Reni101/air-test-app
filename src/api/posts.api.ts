@@ -12,6 +12,6 @@ export const postsApi = {
 export type sortType = 'id' | 'title' | 'body'
 export type queryTypes = {
     q: string | null,
-    _sort: sortType
-    _order: 'asc' | 'desc'
+    _sort: sortType | null
+    _order: 'asc' | 'desc' | null
 }

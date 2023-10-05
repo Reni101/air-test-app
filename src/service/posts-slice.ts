@@ -34,8 +34,8 @@ const initialState: initStateType = {
     posts: [],
     filters: {
         q: null,
-        _sort: 'id',
-        _order: 'asc',
+        _sort: null,
+        _order: null,
     },
     postsPerPage: 10,
 
