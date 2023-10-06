@@ -2,21 +2,17 @@ import {useEffect, useRef} from 'react';
 import {FlatList, StyleSheet, View} from "react-native";
 import {useAppSelector} from "../../common/hooks/useAppHooks";
 import {PostItem} from "./post-item/post-item";
-import {selectPosts, selectPostsPerPage} from "../../service/posts-slice";
+import {selectPage, selectPosts, selectPostsPerPage} from "../../service/posts-slice";
 import {TableHead} from "./table-head/table-head";
 
-type propsType = {
-    currentPage: number
-}
 
-
-export const Table = ({currentPage}: propsType) => {
+export const Table = () => {
 
     const listRef = useRef<FlatList<any>>(null);
 
     const posts = useAppSelector(selectPosts)
     const postsPerPage = useAppSelector(selectPostsPerPage)
-
+    const currentPage = useAppSelector(selectPage)
 
     const start = (currentPage - 1) * postsPerPage
     const end = start + postsPerPage

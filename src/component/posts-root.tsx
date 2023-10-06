@@ -1,7 +1,7 @@
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {StatusBar, StyleSheet, View} from "react-native";
 import {useAppDispatch, useAppSelector} from "../common/hooks/useAppHooks";
-import {getPosts, selectOrder, selectSort, selectTotalPages, setSearchText} from "../service/posts-slice";
+import {getPosts, selectOrder, selectSort, setPage, setSearchText} from "../service/posts-slice";
 import {PADDING} from "../common/constant/constant";
 import {TextField} from "./text-field/text-field";
 import {Table} from "./table/table";
@@ -11,14 +11,14 @@ import useDebounce from "../common/hooks/useDebounce";
 
 export const PostsRoot = () => {
     const dispatch = useAppDispatch()
-    const searchText = useAppSelector(state => state.postsSlice.filters.q)
-    const totalPosts = useAppSelector(selectTotalPages)
+    const searchText = useAppSelector(state => state.postsSlice.queries.q)
+
     const sort = useAppSelector(selectSort)
     const order = useAppSelector(selectOrder)
 
 
     const debouncedValue = useDebounce<string>(searchText ?? "")
-    const [page, setPage] = useState<number>(1)
+
 
     const onChangeHandler = (text: string) => {
         dispatch(setSearchText(text))
@@ -26,7 +26,7 @@ export const PostsRoot = () => {
 
     useEffect(() => {
         dispatch(getPosts())
-        setPage(1)
+        dispatch(setPage(1))
     }, [debouncedValue, sort, order])
 
 
@@ -34,8 +34,8 @@ export const PostsRoot = () => {
         <View style={styles.container}>
             <StatusBar barStyle={'light-content'}/>
             <TextField placeholder={'поиск'} value={searchText ?? ''} onChangeText={onChangeHandler}/>
-            <Table currentPage={page}/>
-            <Pagination currentPage={page} total={totalPosts} changePage={setPage}/>
+            <Table/>
+            <Pagination/>
         </View>
     );
 };

@@ -3,17 +3,16 @@ import {usePagination} from "./usePagination";
 import {PageButtonsForRender} from "./page-buttons-for-render/page-buttons-for-render";
 import {color} from "../../common/style/variables";
 import {Chevron} from "../../common/icons/chevron";
+import {useAppDispatch, useAppSelector} from "../../common/hooks/useAppHooks";
+import {selectPage, selectTotalPages, setPage} from "../../service/posts-slice";
 
-type PropsType = {
-    currentPage: number,
-    total: number
-    changePage: (page: number) => void
-}
-
-export const Pagination = (props: PropsType) => {
+export const Pagination = () => {
+    const dispatch = useAppDispatch()
+    const currentPage = useAppSelector(selectPage)
+    const totalPages = useAppSelector(selectTotalPages)
 
     const onChange = (pageNumber: number) => {
-        props.changePage(pageNumber)
+        dispatch(setPage(pageNumber))
     }
 
     const {
@@ -24,8 +23,8 @@ export const Pagination = (props: PropsType) => {
         handleNextPageClicked,
         handleMainPageClicked,
     } = usePagination({
-        count: props.total,
-        page: props.currentPage,
+        count: totalPages,
+        page: currentPage,
         onChange,
     })
 
@@ -37,7 +36,7 @@ export const Pagination = (props: PropsType) => {
             </Pressable>
 
             <PageButtonsForRender
-                currentPage={props.currentPage}
+                currentPage={currentPage}
                 handleMainPageClicked={handleMainPageClicked}
                 paginationRange={paginationRange}
             />

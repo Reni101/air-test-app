@@ -7,10 +7,10 @@ import {RootState} from "./store";
 export const getPosts = createAppAsyncThunk(
     'weatherReducer/getWeather',
     async (_, {rejectWithValue, getState}) => {
-        const _sort = getState().postsSlice.filters._sort
-        const _order = getState().postsSlice.filters._order
+        const _sort = getState().postsSlice.queries._sort
+        const _order = getState().postsSlice.queries._order
 
-        let q = getState().postsSlice.filters.q
+        let q = getState().postsSlice.queries.q
         if (q === '') q = null
 
         try {
@@ -26,18 +26,20 @@ export const getPosts = createAppAsyncThunk(
 
 type initStateType = {
     posts: Post[]
-    filters: queryTypes,
+    queries: queryTypes,
     postsPerPage: number,
+    page: number,
 }
 
 const initialState: initStateType = {
     posts: [],
-    filters: {
+    queries: {
         q: null,
         _sort: null,
         _order: null,
     },
     postsPerPage: 10,
+    page: 1,
 
 }
 
@@ -46,11 +48,14 @@ const slice = createSlice({
     initialState,
     reducers: {
         setSearchText(state, action: PayloadAction<string>) {
-            state.filters.q = action.payload
+            state.queries.q = action.payload
         },
         setSortParams(state, action: PayloadAction<Omit<queryTypes, 'q'>>) {
-            state.filters._sort = action.payload._sort
-            state.filters._order = action.payload._order
+            state.queries._sort = action.payload._sort
+            state.queries._order = action.payload._order
+        },
+        setPage(state, action: PayloadAction<number>) {
+            state.page = action.payload
         }
     },
     extraReducers: builder => {
@@ -64,15 +69,16 @@ const slice = createSlice({
 export const selectTotalPosts = (state: RootState) => state.postsSlice.posts.length
 export const selectPosts = (state: RootState) => state.postsSlice.posts
 export const selectPostsPerPage = (state: RootState) => state.postsSlice.postsPerPage
-export const selectSort = (state: RootState) => state.postsSlice.filters._sort
-export const selectOrder = (state: RootState) => state.postsSlice.filters._order
+export const selectSort = (state: RootState) => state.postsSlice.queries._sort
+export const selectOrder = (state: RootState) => state.postsSlice.queries._order
+export const selectPage = (state: RootState) => state.postsSlice.page
 
 export const selectTotalPages = createSelector(selectTotalPosts, selectPostsPerPage, (totalPosts, postsPerPage) => {
     return Math.ceil(totalPosts / postsPerPage)
 })
 
 
-export const {setSearchText, setSortParams} = slice.actions
+export const {setSearchText, setSortParams, setPage} = slice.actions
 export const postsReducer = slice.reducer
 
 
